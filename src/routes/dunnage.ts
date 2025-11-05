@@ -28,7 +28,7 @@ router.get('/', async (req: Request, res: Response) => {
           { cell: { contains: search, mode: 'insensitive' } },
           { partNumber: { contains: search, mode: 'insensitive' } },
           { primaryDunnage: { contains: search, mode: 'insensitive' } },
-          { backupDunnage: { contains: search, mode: 'insensitive' } },
+          { backupDunnage: { not: null, contains: search, mode: 'insensitive' } },
         ],
       });
     }

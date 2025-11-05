@@ -41,16 +41,21 @@ async function main() {
   for (let i = 1; i < lines.length; i++) {
     const values = lines[i].split(';').map(v => v.trim());
     
+    const phStdValue = parseValue(values[5]);
+    const phBreakValue = parseValue(values[6]);
+    const phLunchValue = parseValue(values[7]);
+    const pkPiecesKanbanValue = parseValue(values[8]);
+    
     const dunnageItem: DunnageData = {
       team: values[0],
       cell: values[1],
       partNumber: values[2],
       primaryDunnage: values[3],
       backupDunnage: values[4] && values[4] !== '' ? values[4] : undefined,
-      phStd: parseValue(values[5]) || undefined,
-      phBreak: parseValue(values[6]) || undefined,
-      phLunch: parseValue(values[7]) || undefined,
-      pkPiecesKanban: parseValue(values[8]) || undefined,
+      phStd: phStdValue !== null ? phStdValue : undefined,
+      phBreak: phBreakValue !== null ? phBreakValue : undefined,
+      phLunch: phLunchValue !== null ? phLunchValue : undefined,
+      pkPiecesKanban: pkPiecesKanbanValue !== null ? pkPiecesKanbanValue : undefined,
     };
 
     data.push(dunnageItem);
