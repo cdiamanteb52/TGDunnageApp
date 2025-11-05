@@ -1,4 +1,5 @@
 import { Router, Request, Response } from 'express';
+import { Prisma } from '@prisma/client';
 import prisma from '../prismaClient';
 
 const router = Router();
@@ -9,24 +10,31 @@ router.get('/', async (req: Request, res: Response) => {
     const { team, cell, search } = req.query;
 
     // Build where clause based on query params
-    const where: any = {};
+    const where: Prisma.DunnageWhereInput = {};
+    const andConditions: Prisma.DunnageWhereInput[] = [];
 
     if (team && typeof team === 'string') {
-      where.team = team;
+      andConditions.push({ team });
     }
 
     if (cell && typeof cell === 'string') {
-      where.cell = cell;
+      andConditions.push({ cell });
     }
 
     if (search && typeof search === 'string') {
-      where.OR = [
-        { team: { contains: search, mode: 'insensitive' } },
-        { cell: { contains: search, mode: 'insensitive' } },
-        { partNumber: { contains: search, mode: 'insensitive' } },
-        { primaryDunnage: { contains: search, mode: 'insensitive' } },
-        { backupDunnage: { contains: search, mode: 'insensitive' } },
-      ];
+      andConditions.push({
+        OR: [
+          { team: { contains: search, mode: 'insensitive' } },
+          { cell: { contains: search, mode: 'insensitive' } },
+          { partNumber: { contains: search, mode: 'insensitive' } },
+          { primaryDunnage: { contains: search, mode: 'insensitive' } },
+          { backupDunnage: { contains: search, mode: 'insensitive' } },
+        ],
+      });
+    }
+
+    if (andConditions.length > 0) {
+      where.AND = andConditions;
     }
 
     const dunnageItems = await prisma.dunnage.findMany({

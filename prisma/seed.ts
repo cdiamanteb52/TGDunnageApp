@@ -46,11 +46,11 @@ async function main() {
       cell: values[1],
       partNumber: values[2],
       primaryDunnage: values[3],
-      backupDunnage: values[4] || undefined,
-      phStd: parseValue(values[5]) ?? undefined,
-      phBreak: parseValue(values[6]) ?? undefined,
-      phLunch: parseValue(values[7]) ?? undefined,
-      pkPiecesKanban: parseValue(values[8]) ?? undefined,
+      backupDunnage: values[4] && values[4] !== '' ? values[4] : undefined,
+      phStd: parseValue(values[5]) || undefined,
+      phBreak: parseValue(values[6]) || undefined,
+      phLunch: parseValue(values[7]) || undefined,
+      pkPiecesKanban: parseValue(values[8]) || undefined,
     };
 
     data.push(dunnageItem);
