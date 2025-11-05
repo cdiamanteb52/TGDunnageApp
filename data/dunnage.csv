@@ -1,0 +1,9 @@
+team;cell;partNumber;primaryDunnage;backupDunnage;phStd;phBreak;phLunch;pkPiecesKanban
+Team A;Cell 1;PN-001;Dunnage Type A;Dunnage Type B;100;10;30;50
+Team A;Cell 2;PN-002;Dunnage Type C;Dunnage Type D;120;15;30;60
+Team B;Cell 1;PN-003;Dunnage Type E;;90;10;25;45
+Team B;Cell 2;PN-004;Dunnage Type F;Dunnage Type G;TBD;TBD;TBD;N/A
+Team C;Cell 1;PN-005;Dunnage Type H;Dunnage Type I;110;12;30;55
+Team C;Cell 2;PN-006;Dunnage Type J;;95;N/A;28;48
+Team D;Cell 1;PN-007;Dunnage Type K;Dunnage Type L;105;11;30;52
+Team D;Cell 2;PN-008;Dunnage Type M;;TBD;10;N/A;N/A
