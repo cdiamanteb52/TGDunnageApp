@@ -1,0 +1,40 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // Public read for part catalog and cell status
+    match /artifacts/{appId}/public/data/partCatalog/{partNumber} {
+      allow read: if true;
+      // write allowed only to CMs (custom claim 'cm' required)
+      allow write: if request.auth != null && request.auth.token.cm == true;
+    }
+
+    match /artifacts/{appId}/public/data/cellStatus/{cellName} {
+      allow read: if true;
+      allow create: if request.auth != null && request.auth.token.cm == true;
+      // MHs can update limited fields for cells they operate on (example)
+      allow update: if request.auth != null && (
+        request.auth.token.cm == true ||
+        // MH role can toggle isRunning/isDown and add lastDropOff/lastPickup
+        (request.auth.token.mh == true && (
+            // restrict fields MH can change
+            request.resource.data.keys().hasOnly([
+              "isRunning","isDown","currentLabelBatch","lastUpdated","lastDropOff","lastPickup","isBackupCell","originalCell","changeoverPending","team","currentPartNumber"
+            ])
+        ))
+      );
+    }
+
+    match /artifacts/{appId}/public/data/cellStatus/{cellName}/dunnageLog/{logId} {
+      allow read: if true;
+      // allow authenticated MHs to write log entries
+      allow create: if request.auth != null && request.auth.token.mh == true;
+      allow delete, update: if false; // append-only
+    }
+
+    // default deny
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}
